@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /project/phemlock/cvsroot/phemlock/src/core/htext4.lisp,v 1.1 2004/07/09 15:00:36 gbaumann Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/core/htext4.lisp,v 1.2 2004/12/23 23:58:29 abakic Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -64,7 +64,8 @@
 		    (region-end *internal-temp-region*) mark)
 	      (setf (region-start *internal-temp-region*) mark
 		    (region-end *internal-temp-region*) other-mark))
-	  (delete-region *internal-temp-region*) t)
+	  (delete-region *internal-temp-region*)
+          t)
 	 (t nil)))))))
 
 
