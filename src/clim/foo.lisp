@@ -44,6 +44,10 @@
             )
    ))
 
+(defclass clim-hunk-pane (CLIM:APPLICATION-PANE)
+  ((hunk)
+   ))
+
 (defmethod device-init ((device clim-device))
   )
 
@@ -236,10 +240,6 @@
 
 ;;;; There is awful lot to do to boot a device.
 
-(defclass clim-hunk-pane (CLIM:APPLICATION-PANE)
-  ((hunk)
-   ))
-
 (defmethod clim:note-sheet-region-changed :after ((sheet clim-hunk-pane))
   (when (slot-boundp sheet 'hunk)
     (clim-window-changed (slot-value sheet 'hunk))
@@ -287,7 +287,7 @@
 
 (defun clim-hemlock ()
   (when *clim-hemlock-process*
-    (mp:destroy-process *clim-hemlock-process*))
+    (clim-sys:destroy-process *clim-hemlock-process*))
   (setf *clim-hemlock-process*
         (clim-sys:make-process
          (lambda ()
@@ -693,5 +693,8 @@
     (3 (clim:make-rgb-color 1 .9 .8))
     (otherwise clim:+white+)))
 
-;; $Log:$
+;; $Log: foo.lisp,v $
+;; Revision 1.4  2004/11/21 01:03:51  gbaumann
+;; Basic support for c-x 1 and c-x 2.
+;;
 

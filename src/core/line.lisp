@@ -7,7 +7,7 @@
 (in-package :hemlock-internals)
 
 #+CMU (ext:file-comment
-  "$Header: /hemlock/hemlock/src/line.lisp,v 1.2 2003/03/26 07:50:10 gilbert Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/core/line.lisp,v 1.1 2004/07/09 15:00:36 gbaumann Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -139,7 +139,7 @@
 ;;;
 #+buffered-lines
 (defmacro %set-line-chars (line chars)
-  `(setf (line-%chars ,line) ,chars))
+  `(setf (line-%chars ,line) ,chars)) ; EW: CHARS can be a "tick".
 
 
 ;;; Line-Signature  --  Public
@@ -186,4 +186,7 @@
 	 (t
 	  (length (the simple-string (line-%chars ,line))))))
 
-;; $Log: $
+;; $Log: line.lisp,v $
+;; Revision 1.1  2004/07/09 15:00:36  gbaumann
+;; Let us see if this works.
+;;

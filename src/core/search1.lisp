@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /hemlock/hemlock/src/search1.lisp,v 1.3 2003/07/27 17:54:15 jdz Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/core/search1.lisp,v 1.1 2004/07/09 15:00:36 gbaumann Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -34,7 +34,6 @@
 (defun %print-search-pattern (object stream depth)
   (let ((*print-level* (and *print-level* (- *print-level* depth)))
 	(*print-case* :downcase))
-    (declare (special *print-level* *print-case*))
     (write-string "#<Hemlock " stream)
     (princ (search-pattern-direction object) stream)
     (write-char #\space stream)
