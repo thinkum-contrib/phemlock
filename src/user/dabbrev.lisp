@@ -1,7 +1,6 @@
 ;; -*- Log: hemlock.log; Package: Hemlock -*-
 ;;;
-(ext:file-comment
-  "$Header: /home/CVS-cmucl/src/hemlock/dabbrev.lisp,v 1.1 2003/02/25 15:18:34 emarsden Exp $")
+
 
 ;;; **********************************************************************
 ;;; Dynamic abbreviation (dabbrev) command, knocked off from GNU Emacs.
