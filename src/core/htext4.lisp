@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /hemlock/hemlock/src/htext4.lisp,v 1.3 2003/07/27 17:54:15 jdz Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/core/htext4.lisp,v 1.1 2004/07/09 15:00:36 gbaumann Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -71,7 +71,7 @@
 
 ;;;; DELETE-REGION.
 
-(defun delete-region (region)
+(defmethod delete-region (region)
   "Deletes the Region."
   (let* ((start (region-start region))
 	 (end (region-end region))
@@ -139,7 +139,7 @@
 
 ;;;; DELETE-AND-SAVE-REGION.
 
-(defun delete-and-save-region (region)
+(defmethod delete-and-save-region (region)
   "Deletes Region and returns a region containing the deleted characters."
   (let* ((start (region-start region))
 	 (end (region-end region))
