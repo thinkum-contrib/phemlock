@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /hemlock/hemlock/src/table.lisp,v 1.3 2003/03/26 07:50:10 gilbert Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/core/table.lisp,v 1.1 2004/07/09 15:00:36 gbaumann Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -304,7 +304,7 @@
 	    (values (value-node-value (svref nodes pos)) t)
 	    (values nil nil))))))
 
-(defun %set-string-table (string table value)
+(defun (setf getstring) (value string table)
   "Sets the value of String in Table to Value.  If necessary, creates
   a new entry in the string table."
   (with-folded-string (folded len string (string-table-separator table))

@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /hemlock/hemlock/src/bit-screen.lisp,v 1.4 2004/05/26 16:36:39 gilbert Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/bitmap/bit-screen.lisp,v 1.1.1.1 2004/07/09 13:37:58 gbaumann Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -1123,19 +1123,19 @@
 
 ;;;; Setting window width and height.
 
-;;; %SET-WINDOW-WIDTH  --  Internal
+;;; (SETF WINDOW-WIDTH)  --  Internal
 ;;;
 ;;;    Since we don't support non-full-width windows, this does nothing.
 ;;;
-(defun %set-window-width (window new-value)
+(defun (setf window-width) (new-value window)
   (declare (ignore window))
   new-value)
 
-;;; %SET-WINDOW-HEIGHT  --  Internal
+;;; (SETF WINDOW-HEIGHT)  --  Internal
 ;;;
 ;;;    Can't change window height either.
 ;;;
-(defun %set-window-height (window new-value)
+(defun (setf window-height) (new-value window)
   (declare (ignore window))
   new-value)
 

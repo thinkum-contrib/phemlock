@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /hemlock/hemlock/src/ring.lisp,v 1.3 2003/07/27 17:54:15 jdz Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/core/ring.lisp,v 1.1 2004/07/09 15:00:36 gbaumann Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -132,11 +132,12 @@
 	(aref vec (if (>= sum max) (- sum max) sum)))))))
 
 
-;;; %set-ring-ref  --  Internal
+;;; (SETF RING-REF)  --  Internal
 ;;;
 ;;;    Setf form for ring-ref, set a ring element.
 ;;;
-(defun %set-ring-ref (ring index value)
+(defun (setf ring-ref) (value ring index)
+  "Set an element in a ring."
   (declare (fixnum index))
   (let* ((first (ring-first ring))
 	 (diff (- (ring-bound ring) first))
