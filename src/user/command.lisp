@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /hemlock/hemlock/src/command.lisp,v 1.2 2003/03/26 07:50:10 gilbert Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/user/command.lisp,v 1.1.1.1 2004/07/09 13:39:09 gbaumann Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -40,7 +40,7 @@
   "Pause the Hemlock/Lisp process returning to the process that invoked the
    Lisp."
   (declare (ignore p))
-  (pause-hemlock))
+  #+nilamb(pause-hemlock))
 
 
 

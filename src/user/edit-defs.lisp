@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /hemlock/hemlock/src/edit-defs.lisp,v 1.3 2003/07/29 20:01:33 jdz Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/user/edit-defs.lisp,v 1.1.1.1 2004/07/09 13:38:48 gbaumann Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -164,10 +164,13 @@
 	  (unless in-editor-p
 	    (message "Editing definition from editor Lisp ..."))
 	  (go-to-definition pathname type name))
-	(let ((results (eval-form-in-server
-			info
+	(let ((results (eval;-form-in-server ; disabled, trying something close --amb
+			;info
+			(mapcar
+			 #'prin1-to-string
+			(read-from-string
 			(format nil "(hemlock::definition-editing-info ~S)"
-				fun-name))))
+				fun-name))))))
 	  (go-to-definition (read-from-string (first results)) ;file
 			    (read-from-string (second results)) ;type
 			    (read-from-string (third results))))))) ;name

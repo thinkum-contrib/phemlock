@@ -7,7 +7,7 @@
 (in-package :hemlock-internals)
 
 #+CMU (ext:file-comment
-  "$Header: /project/phemlock/cvsroot/phemlock/src/core/struct.lisp,v 1.1 2004/07/09 15:00:36 gbaumann Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/core/struct.lisp,v 1.2 2004/08/10 12:47:07 rstrandh Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -592,7 +592,7 @@
           :accessor tty-device-speed)))
 
 (defun %make-tty-device (&rest initargs)
-  (make-instance 'tty-device initargs))
+  (apply #'make-instance 'tty-device initargs))
 
 
 ;;;; Device screen hunks and window-group.

@@ -7,7 +7,7 @@
 (in-package :hemlock-internals)
 
 #+CMU (ext:file-comment
-  "$Header: /hemlock/hemlock/src/input.lisp,v 1.4 2004/05/26 16:36:39 gilbert Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/core/input.lisp,v 1.1 2004/07/09 15:00:36 gbaumann Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -337,7 +337,7 @@
 	 (buffer (window-buffer window))
 	 (start (buffer-start-mark buffer)))
     (when (typep (hi::device-hunk-device (hi::window-hunk window))
-		 'hi::bitmap-device)
+		 (the class (class-of 'hi::bitmap-device)))
       (let ((*more-prompt-action* :normal))
 	(update-modeline-field buffer window :more-prompt)
 	(random-typeout-redisplay window))

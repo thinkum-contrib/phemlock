@@ -2,7 +2,7 @@
 
 ;;; Use #.*fast* for optimizations.
 
-(eval-when (compile eval load)
+(eval-when (:compile-toplevel :load-toplevel :execute)
   (defparameter *fast*
     '(declare (optimize speed)))
 

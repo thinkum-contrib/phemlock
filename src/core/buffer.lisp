@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /project/phemlock/cvsroot/phemlock/src/core/buffer.lisp,v 1.1 2004/07/09 15:00:36 gbaumann Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/core/buffer.lisp,v 1.2 2004/08/10 12:47:06 rstrandh Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -15,6 +15,10 @@
 ;;;
 
 (in-package :hemlock-internals)
+
+(declaim (special *current-buffer* ; because it is defined too late --amb
+		  *global-variable-names* ; defined in main.lisp --amb
+		  ))
 
 
 ;;;; Some buffer structure support.

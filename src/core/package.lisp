@@ -101,6 +101,8 @@
    #:delete-characters
    #:delete-region
    #:delete-and-save-region
+   #:fetch-cut-string
+   #:store-cut-string
    #:filter-region
    #:start-line-p
    #:end-line-p
@@ -537,6 +539,7 @@
    #:complete-file
    #:default-directory
    #:set-file-permissions
+   #:ambiguous-files
    ))
 
 (defpackage :hemlock-internals
@@ -858,6 +861,10 @@
   )
 
 ;; $Log: package.lisp,v $
+;; Revision 1.3  2004/08/10 05:58:04  rstrandh
+;; Removed logical-key-event-name and logical-key-event-documentation
+;; as they were never used.
+;;
 ;; Revision 1.2  2004/08/10 05:24:16  rstrandh
 ;; Removed the string table *logical-key-event-names* as it was never
 ;; used, only written to.

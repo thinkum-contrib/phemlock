@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /project/phemlock/cvsroot/phemlock/src/core/interp.lisp,v 1.1 2004/07/09 15:00:36 gbaumann Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/core/interp.lisp,v 1.2 2004/08/10 12:47:07 rstrandh Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -16,6 +16,8 @@
 ;;;
 
 (in-package :hemlock-internals)
+
+(declaim (special *echo-area-buffer*)) ; defined in echo.lisp --amb
 
 (defun %print-hcommand (obj stream depth)
   (declare (ignore depth))

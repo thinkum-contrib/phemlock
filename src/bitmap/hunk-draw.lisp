@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /hemlock/hemlock/src/hunk-draw.lisp,v 1.5 2004/05/26 16:36:39 gilbert Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/bitmap/hunk-draw.lisp,v 1.1.1.1 2004/07/09 13:38:02 gbaumann Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -15,7 +15,11 @@
 ;;;
 (in-package :hemlock.x11)
 
-
+(declaim (special *default-background-pixel* ; defined in bit-screen --amb
+		  *foreground-background-xor* ; defined in bit-screen --amb
+		  *default-font-family* ; defined in font --amb
+		  *current-window* ; defined in window --amb
+		  ))
 ;;;; TODO
 
 ;; . concentrate these in a single point where we draw a string, so that we
@@ -471,6 +475,9 @@
 	  (incf x font-width))))))
 
 ;; $Log: hunk-draw.lisp,v $
+;; Revision 1.1.1.1  2004/07/09 13:38:02  gbaumann
+;; import
+;;
 ;; Revision 1.5  2004/05/26 16:36:39  gilbert
 ;; DEVICE, BITMAP-DEVICE and TTY-DEVICE are now CLOS classes. Made the
 ;; former DEVICE-xyz slots into methods in a feeble attempt to separate
