@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /project/phemlock/cvsroot/phemlock/src/core/charmacs.lisp,v 1.1 2004/07/09 15:00:36 gbaumann Exp $")
+  "$Header: /project/phemlock/cvsroot/phemlock/src/core/charmacs.lisp,v 1.2 2004/12/27 18:53:27 gbaumann Exp $")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -29,7 +29,7 @@
 
 ;;;; Stuff for the Syntax table functions (syntax)
 
-(defconstant syntax-char-code-limit char-code-limit
+(defconstant syntax-char-code-limit 256
   "The highest char-code which a character argument to the syntax
   table functions may have.")
 
