@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /hemlock/hemlock/src/streams.lisp,v 1.5 2003/08/05 19:57:11 gilbert Exp $")
+  "$Header$")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -34,6 +34,13 @@
 ;; this should suffice for now:
 (defmethod stream-write-char ((stream hemlock-output-stream) char)
   (funcall (old-lisp-stream-out stream) stream char))
+
+(defmethod stream-write-string ((stream hemlock-output-stream) string
+                                &optional
+                                (start 0)
+                                (end (length string)))
+  (funcall (old-lisp-stream-sout stream) stream string start end))
+                                
 
 (defmethod print-object ((object hemlock-output-stream) stream)
   (write-string "#<Hemlock output stream>" stream))
@@ -68,63 +75,40 @@
      (error "~S is a losing value for Buffered." buffered)))
   stream)
 
-(defmacro with-left-inserting-mark ((var form) &body forms)
-  (let ((change (gensym)))
-    `(let* ((,var ,form)
-	    (,change (eq (mark-kind ,var) :right-inserting)))
-       (unwind-protect
-	   (progn
-	     (when ,change
-	       (setf (mark-kind ,var) :left-inserting))
-	     ,@forms)
-	 (when ,change
-	   (setf (mark-kind ,var) :right-inserting))))))
-
 (defun hemlock-output-unbuffered-out (stream character)
-  (with-left-inserting-mark (mark (hemlock-output-stream-mark stream))
-    (insert-character mark character)
-    (redisplay-windows-from-mark mark)))
+  (let ((mark (hemlock-output-stream-mark stream)))
+    (modifying-buffer-storage ((mark-buffer mark))
+      (insert-character mark character)
+      (unless (eq (mark-kind mark) :left-inserting)
+	(character-offset mark 1)))))
 
 (defun hemlock-output-unbuffered-sout (stream string start end)
-  (with-left-inserting-mark (mark (hemlock-output-stream-mark stream))
-    (insert-string mark string start end)
-    (redisplay-windows-from-mark mark)))
+  (unless (and (eql start 0)
+	       (eql end (length string)))
+    (setq string (subseq string start end)))
+  (let ((mark (hemlock-output-stream-mark stream)))
+    (modifying-buffer-storage ((mark-buffer mark))
+      (insert-string mark string)
+      (unless (eq (mark-kind mark) :left-inserting)
+	(character-offset mark (- end start))))))
 
 (defun hemlock-output-buffered-out (stream character)
-  (with-left-inserting-mark (mark (hemlock-output-stream-mark stream))
-    (insert-character mark character)))
+  (hemlock-output-unbuffered-out stream character))
+
 
 (defun hemlock-output-buffered-sout (stream string start end)
-  (with-left-inserting-mark (mark (hemlock-output-stream-mark stream))
-    (insert-string mark string start end)))
+  (hemlock-output-unbuffered-sout stream string start end))
 
 (defun hemlock-output-line-buffered-out (stream character)
-  (with-left-inserting-mark (mark (hemlock-output-stream-mark stream))
-    (insert-character mark character)
-    (when (char= character #\newline)
-      (redisplay-windows-from-mark mark))))
+  (hemlock-output-unbuffered-out stream character))
 
 (defun hemlock-output-line-buffered-sout (stream string start end)
-  (declare (simple-string string))
-  (with-left-inserting-mark (mark (hemlock-output-stream-mark stream))
-    (insert-string mark string start end)
-    (when (find #\newline string :start start :end end)
-      (redisplay-windows-from-mark mark))))
+  (hemlock-output-unbuffered-sout stream string start end))
 
-#+NIL
-(defmethod excl:stream-line-length ((stream hemlock-output-stream))
-  (let* ((buffer (line-buffer (mark-line (hemlock-output-stream-mark stream)))))
-       (when buffer
-	 (do ((w (buffer-windows buffer) (cdr w))
-	      (min most-positive-fixnum (min (window-width (car w)) min)))
-	     ((null w)
-	      (if (/= min most-positive-fixnum) min))))))
 
-(defmethod stream-finish-output ((stream hemlock-output-stream))
-  (redisplay-windows-from-mark (hemlock-output-stream-mark stream)))
+(defmethod stream-finish-output ((stream hemlock-output-stream)))
 
-(defmethod stream-force-output ((stream hemlock-output-stream))
-  (redisplay-windows-from-mark (hemlock-output-stream-mark stream)))
+(defmethod stream-force-output ((stream hemlock-output-stream)))
 
 (defmethod close ((stream hemlock-output-stream) &key abort)
   (declare (ignore abort))
@@ -225,37 +209,33 @@
 
 ;;;; Stuff to support keyboard macros.
 
-(defclass kbdmac-stream (editor-input)
-  ((buffer :initarg :buffer
-           :initform nil
-           :accessor kbdmac-stream-buffer
-           :documentation "The simple-vector that holds the characters.")
-   (index  :initarg :index
-           :initform nil
-           :accessor kbdmac-stream-index
-           :documentation "Index of the next character.")))
+#+later
+(progn
+  
+(defstruct (kbdmac-stream
+	    (:include editor-input
+		      (get #'kbdmac-get)
+		      (unget #'kbdmac-unget)
+		      (listen #'kbdmac-listen))
+	    (:constructor make-kbdmac-stream ()))
+  buffer    ; The simple-vector that holds the characters.
+  index)    ; Index of the next character.
 
-(defun make-kbdmac-stream ()
-  (make-instance 'kbdmac-stream))
-
-(defmethod get-key-event ((stream kbdmac-stream) &optional ignore-abort-attempts-p)
+(defun kbdmac-get (stream ignore-abort-attempts-p)
   (declare (ignore ignore-abort-attempts-p))
   (let ((index (kbdmac-stream-index stream)))
     (setf (kbdmac-stream-index stream) (1+ index))
-    (setq *last-key-event-typed*
-	  (svref (kbdmac-stream-buffer stream) index))))
+    (setf (last-key-event-typed) (svref (kbdmac-stream-buffer stream) index))))
 
-(defmethod unget-key-event (ignore (stream kbdmac-stream))
+(defun kbdmac-unget (ignore stream)
   (declare (ignore ignore))
   (if (plusp (kbdmac-stream-index stream))
       (decf (kbdmac-stream-index stream))
       (error "Nothing to unread.")))
 
-(defmethod listen-editor-input ((stream kbdmac-stream))
+(defun kbdmac-listen (stream)
   (declare (ignore stream))
   t)
-
-;; clear-editor-input ?? --GB
 
 ;;; MODIFY-KBDMAC-STREAM  --  Internal
 ;;;
@@ -265,3 +245,4 @@
   (setf (kbdmac-stream-index stream) 0)
   (setf (kbdmac-stream-buffer stream) input)
   stream)
+)
