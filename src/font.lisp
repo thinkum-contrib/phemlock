@@ -5,7 +5,7 @@
 ;;; Carnegie Mellon University, and has been placed in the public domain.
 ;;;
 #+CMU (ext:file-comment
-  "$Header: /project/phemlock/cvsroot/phemlock/src/font.lisp,v 1.1.1.1 2004/07/09 13:37:45 gbaumann Exp $")
+  "$Header$")
 ;;;
 ;;; **********************************************************************
 ;;;
@@ -19,6 +19,30 @@
 (in-package :hemlock-internals)
 
 ;;;; Creating, Deleting, and Moving.
+
+(defun new-font-region (buffer start-mark end-mark  font)
+  (let* ((start-line (mark-line start-mark))
+         (end-line (mark-line end-mark))
+         (font-start (internal-make-font-mark start-line
+                                              (mark-charpos start-mark)
+                                              :right-inserting
+                                              font))
+         (font-end (internal-make-font-mark end-line
+                                              (mark-charpos end-mark)
+                                              :right-inserting
+                                              font))
+         (region (internal-make-font-region font-start font-end)))
+    (setf (font-mark-region font-start) region
+          (font-mark-region font-end) region)
+    (push font-start (line-marks start-line))
+    (push font-end (line-marks end-line))
+    (add-buffer-font-region buffer region)
+    (hemlock-ext:buffer-note-font-change buffer region font)
+    region))
+
+
+
+
 
 (defun font-mark (line charpos font &optional (kind :right-inserting))
   "Returns a font on line at charpos with font.  Font marks must be permanent
